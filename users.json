@@ -1,0 +1,29 @@
+[
+    {
+        "username": "tester",
+        "password": "scrypt:32768:8:1$xBZNWzfaxGgPanbS$811d8fc97954f0cae5204bddeab6ca80036ac87b7726d90acda834a307d242e804b8c5d90c2067c08e745464d79341c80b8390eb53aba48efc78e4ad72a0ee6d",
+        "phone": "123456789",
+        "photo": "uploads/IMG20240817202323.jpg",
+        "email": "VOLODYMYR.RAKHMATULIN@lnu.edu.ua",
+        "address": "м. Львів. Тарнавського 107",
+        "role": "owner"
+    },
+    {
+        "username": "tester22",
+        "password": "scrypt:32768:8:1$fLfyegqlxnZtHgmb$264eb47008d4daf10fe6fa91fc5a57f997ec12b8b1b28ef3e22796227f80188cb45bbe0c0c61cc9f7caff8eabb66e4c03d97fd6368ac8944e0c4877ff84c457a",
+        "role": "user"
+    },
+    {
+        "username": "1",
+        "password": "scrypt:32768:8:1$K3CpjM31pT4WIsMt$5ee2696325d20342571ff489c8b175bd0002b452cea4e07526602bac4bec340bb7b199c5d2c873560ab05add93c61a1acb8e0f96c986856f9bbb8cca32372d88",
+        "role": "user"
+    },
+    {
+        "username": "tester222",
+        "password": "scrypt:32768:8:1$HOuiT2RBDXNwWZ3k$006021169c1f08361e907b805537e3ff9768dad1e09bbcaad66ca37e6554918507c2d549ff52cb2af4f953756c06c110b6dd98f75a6d02b3899281cb02774024"
+    },
+    {
+        "username": "11",
+        "password": "scrypt:32768:8:1$mmv0gZfYFRu0hmQs$231481850cb35e6272de693f8b7ab1d4451a1acdff05e8c3abe5de8f6724c420763e06cb34806166cbe909a66314cc1ddd06873e8916300a09256a4f1336dc12"
+    }
+]

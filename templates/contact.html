@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакти</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("{{ url_for('static', filename='uploads/contact.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        nav {
+            background-color: rgba(0, 0, 0, 0.9); /* Темний фон для навігації */
+            padding: 10px 0;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: #444;
+        }
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        section {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        label, input, textarea, button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            color: white;
+        }
+        input, textarea {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        footer {
+            text-align: center;
+            padding: 15px 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: white;
+            margin-top: auto;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('home') }}">Головна</a></li>
+            <li><a href="{{ url_for('news') }}">Новини</a></li>
+            <li><a href="{{ url_for('contact') }}">Контакти</a></li>
+            <li><a href="{{ url_for('about') }}">Про нас</a></li>
+            <li><a href="{{ url_for('login') }}">Увійти</a></li>
+            <li><a href="{{ url_for('register') }}">Зареєструватися</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Контакти</h1>
+        <p>Залиште свої дані і повідомлення, і ми зв'яжемося з вами найближчим часом.</p>
+    </header>
+
+    <section>
+        <form action="{{ url_for('contact') }}" method="post">
+            <label for="name">Ім'я:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Електронна пошта:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="message">Повідомлення:</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+
+            <button type="submit">Відправити</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Курсова. Всі права захищені.</p>
+    </footer>
+</body>
+</html>

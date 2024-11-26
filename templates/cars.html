@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пошук автомобілів за маркою</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('{{ url_for('static', filename='uploads/car1.avif') }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #fff;
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.5); /* Прозорий чорний фон */
+            padding: 20px;
+            border-radius: 10px;
+            width: 60%;
+            margin: 50px auto;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            margin-top: 0;
+        }
+        #brandInput, #modelSelect {
+            display: block;
+            margin: 20px auto;
+            padding: 10px;
+            font-size: 16px;
+            width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            color: #333;
+        }
+        #modelSelect {
+            cursor: pointer;
+        }
+        .back-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #444;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            width: 150px;
+        }
+        .back-button:hover {
+            background-color: #666;
+        }
+    </style>
+    <script>
+        function getBrands(input) {
+            if (input.length > 0) {
+                fetch(`/get_brands?query=${input}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let datalist = document.getElementById('brandList');
+                        datalist.innerHTML = '';
+                        data.brands.forEach(brand => {
+                            let option = document.createElement('option');
+                            option.value = brand;
+                            datalist.appendChild(option);
+                        });
+                    });
+            }
+        }
+
+        function getModelsByBrand() {
+            let brand = document.getElementById('brandInput').value;
+            if (brand) {
+                fetch(`/get_models?brand=${brand}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let modelSelect = document.getElementById('modelSelect');
+                        modelSelect.innerHTML = '<option value="">Виберіть модель</option>';
+                        data.models.forEach(model => {
+                            let option = document.createElement('option');
+                            option.value = model;
+                            option.textContent = model;
+                            modelSelect.appendChild(option);
+                        });
+                    });
+            }
+        }
+
+        function showDetails() {
+            let model = document.getElementById('modelSelect').value;
+            if (model) {
+                window.location.href = `/car_info?model=${model}`;
+            }
+        }
+    </script>
+</head>
+<body>
+    <a href="#" class="back-button" onclick="history.back();">Назад</a>
+    <div class="container">
+        <h1>Пошук автомобілів за маркою</h1>
+        <input type="text" id="brandInput" placeholder="Введіть марку автомобіля" list="brandList" oninput="getBrands(this.value)" onblur="getModelsByBrand()">
+        <datalist id="brandList"></datalist>
+        <select id="modelSelect" onchange="showDetails()">
+            <option value="">Виберіть модель</option>
+        </select>
+    </div>
+</body>
+</html>

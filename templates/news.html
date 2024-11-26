@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новини</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("{{ url_for('static', filename='uploads/news.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .content {
+            flex: 1;
+        }
+        .news-container {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: rgba(255, 255, 255, 0.2); /* Прозорий білий фон */
+            color: black; /* Чорний колір тексту для кращої видимості */
+            margin: 20px auto;
+            border-radius: 10px;
+            max-width: 800px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        h1, h2 {
+            margin: 0 0 15px;
+        }
+        p {
+            margin: 10px 0;
+        }
+        img {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+            border-radius: 10px;
+        }
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Головна</a></li>
+                <li><a href="{{ url_for('news') }}">Новини</a></li>
+                <li><a href="{{ url_for('contact') }}">Контакти</a></li>
+                <li><a href="{{ url_for('about') }}">Про нас</a></li>
+            </ul>
+        </nav>
+
+        <div class="news-container">
+            <header>
+                <h1>Останні новини</h1>
+            </header>
+
+            <section>
+                <article class="news-item">
+                    <h2>«Зроблено в Україні»: Держава частково компенсуватиме купівлю української техніки та енергообладнання</h2>
+                    <p><strong>30.09.2024 | 19:25 | Відділ зв’язків з громадськістю та засобами масової інформації</strong></p>
+                    <p>Покупці виробленої в Україні техніки та електрообладнання матимуть змогу отримати компенсацію в розмірі 15%. Таке рішення ухвалив Кабінет Міністрів 24 вересня 2024 року.</p>
+                    <img src="{{ url_for('static', filename='uploads/made_in_ukraine.png') }}" alt="Зроблено в Україні">
+                </article>
+                <article class="news-item">
+                    <h2>Renault Grand Koleos на базі Geely Monjaro стане глобальною моделлю</h2>
+                    <p><strong>14.11.2024 | Редакція</strong></p>
+                    <img src="{{ url_for('static', filename='uploads/renault-grand-koleos-1.jpg') }}" alt="Renault Grand Koleos" style="display: block; margin: 20px auto; max-width: 100%; border-radius: 10px;">
+                    <p>Renault Grand Koleos, який являє собою перелицьований Geely Monjaro, наразі виробляють у Південній Кореї і він є ексклюзивом для локального ринку. Однак вже найближчим часом він може з'явитися і за межами країни, пише The Korea Times. Renault виношує плани щодо запуску моделі на Близькому Сході та в Африці. Експортна версія позбудеться приставки Grand і, ймовірно, позиціонуватиметься як Koleos нового покоління.</p>
+                    <p>Grand Koleos дебютував влітку цього року і став першим спільним проектом Renault і Geely. Французи запозичили у Monjaro силову структуру кузова та гібридну силову установку, яка вже використовується на китайському ринку під назвою Xingyue L. Відмінності зводяться до дизайну екстер'єру, зокрема безрамкової решітки радіатора з гармонійно вбудованою оптикою від Monjaro.</p>
+                    <p>У Південній Кореї Grand Koleos доступний з бензоелектричною установкою E-Tech, що включає півторалітровий бензиновий двигун і електромотор. Альтернативно доступний варіант з 211-сильним ДВЗ об'ємом 2,0 літра: у передньопривідного варіанту з семиступінчастим «роботом», а у повнопривідного – з восьмидіапазонним автоматом.</p>
+                    <p>Кросовер здобув популярність на південнокорейському ринку: за 11 днів після запуску дилери Renault отримали понад сім тисяч замовлень.</p>
+                    <p>Renault розглядає можливість розширення продажів моделі на ринки Близького Сходу та Африки, де планується пропонувати як версію з дволітровим ДВЗ, так і з гібридною системою. Точні терміни появи моделі за межами Південної Кореї наразі не оголошені.</p>
+                </article>                
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Курсова. Всі права захищені.</p>
+    </footer>
+</body>
+</html>

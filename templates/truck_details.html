@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Деталі моделі: {{ truck['Модель'] }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-image: url("{{ url_for('static', filename='uploads/' + truck['Фото']) }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 10px;
+            color: white;
+            max-width: 1200px;
+            margin: 50px auto;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            flex: 1;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .details p {
+            font-size: 18px;
+            line-height: 1.5;
+        }
+        .flash-message {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px;
+            background-color: #28a745;
+            color: white;
+            border-radius: 10px;
+            z-index: 1000;
+            display: none;
+        }
+        .flash-message.error {
+            background-color: #dc3545;
+        }
+        .comments-section {
+            margin-top: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+        }
+        .comment-item {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+        }
+        .comment-form {
+            display: none;
+            margin-top: 20px;
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+        }
+    </style>
+    <script>
+        function showFlashMessage(message, isError = false) {
+            const flashMessage = document.createElement('div');
+            flashMessage.classList.add('flash-message');
+            if (isError) {
+                flashMessage.classList.add('error');
+            }
+            flashMessage.innerText = message;
+            document.body.appendChild(flashMessage);
+            flashMessage.style.display = 'block';
+
+            setTimeout(() => {
+                flashMessage.style.display = 'none';
+                document.body.removeChild(flashMessage);
+            }, 5000);
+        }
+
+        // Виклик функції для показу повідомлень з сервера
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    showFlashMessage("{{ message }}", "{{ category }}" === 'danger');
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        function toggleCommentForm() {
+            const form = document.querySelector('.comment-form');
+            form.style.display = form.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('home') }}">Головна</a></li>
+            <li><a href="{{ url_for('show_cars') }}">Автомобілі</a></li>
+            <li><a href="{{ url_for('show_buses') }}">Автобуси</a></li>
+            <li><a href="{{ url_for('show_trucks') }}">Вантажівки</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Деталі моделі: {{ truck['Модель'] }}</h1>
+        <div class="details">
+            <p><strong>Марка:</strong> {{ truck['Марка'] or 'Немає даних' }}</p>
+            <p><strong>Тип:</strong> {{ truck['Тип'] or 'Немає даних' }}</p>
+            <p><strong>Колісна формула:</strong> {{ truck['Колісна формула'] or 'Немає даних' }}</p>
+            <p><strong>Двигун:</strong> {{ truck['Двигун'] or 'Немає даних' }}</p>
+            <p><strong>Коробка передач:</strong> {{ truck['Коробка передач'] or 'Немає даних' }}</p>
+            <p><strong>Вантажопідйомність:</strong> {{ truck['Вантажопідйомність'] or 'Немає даних' }}</p>
+            <p><strong>Особливості:</strong> {{ truck['Особливості'] or 'Немає даних' }}</p>
+            <p><strong>Країна виробника:</strong> {{ truck['Країна виробника'] or 'Немає даних' }}</p>
+        </div>
+        <div class="comments-section">
+            <h2>Відгуки користувачів</h2>
+            {% if reviews %}
+                <p>Середня оцінка: {{ avg_rating|round(2) }}/5</p>
+                <ul>
+                    {% for review in reviews %}
+                        <li class="comment-item">
+                            <strong>{{ review[1] }}</strong> - {{ review[2] }}/5<br>
+                            {{ review[3] }}<br>
+                            <small>Дата: {{ review[4] }}</small>
+                            {% if session['role'] == 'admin' or session['role'] == 'owner' or review[1] == session['user'] %}
+                            <form method="post" action="{{ url_for('delete_review', vehicle_id=truck['id'], review_id=review[0]) }}">
+                                <button type="submit" class="btn btn-danger">Видалити</button>
+                            </form>                                                         
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Поки що немає відгуків. Будьте першим!</p>
+            {% endif %}
+            {% if session.get('user') %}
+                <button onclick="toggleCommentForm()">Залишити відгук</button>
+                <div class="comment-form">
+                    <h3>Залишити відгук</h3>
+                    <form method="post" action="{{ url_for('truck_details_view', model=truck['Модель']) }}">
+                        <label for="username">Ім'я:</label>
+                        <input type="text" id="username" name="username" value="{{ session['user'] }}" readonly><br>
+                        <label for="rating">Оцінка:</label>
+                        <select id="rating" name="rating" required>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select><br>
+                        <label for="comment">Коментар:</label><br>
+                        <textarea id="comment" name="comment" rows="4" cols="50"></textarea><br>
+                        <button type="submit">Відправити</button>
+                    </form>
+                </div>
+            {% else %}
+                <p>Будь ласка, <a href="{{ url_for('login') }}">увійдіть в акаунт</a>, щоб залишити відгук.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Курсова. Всі права захищені.</p>
+    </footer>
+</body>
+</html>

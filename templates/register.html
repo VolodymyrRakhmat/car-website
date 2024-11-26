@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Реєстрація</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const flashMessages = {{ get_flashed_messages(with_categories=true) | tojson }};
+            flashMessages.forEach(([category, message]) => {
+                showAlert(message, category);
+            });
+        });
+
+        function showAlert(message, type) {
+            const alertBox = document.createElement('div');
+            alertBox.textContent = message;
+            alertBox.classList.add('alert', `alert-${type}`);
+            document.body.appendChild(alertBox);
+
+            setTimeout(() => {
+                alertBox.remove();
+            }, 3000);
+        }
+    </script>
+    <style>
+        .alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: #fff;
+            z-index: 1000;
+        }
+        .alert-success { background-color: #28a745; }
+        .alert-danger { background-color: #dc3545; }
+    </style>
+</head>
+<body>
+    <h1>Реєстрація</h1>
+    <form method="POST">
+        <input type="text" name="username" placeholder="Ім'я користувача" required>
+        <input type="password" name="password" placeholder="Пароль" required>
+        <button type="submit">Реєстрація</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кабінет користувача</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("{{ url_for('static', filename='uploads/cab.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        nav {
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 10px 0;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: #444;
+        }
+        .profile-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 50px auto;
+            width: 90%;
+            max-width: 1000px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .profile-info, .profile-content {
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        .profile-info {
+            width: 40%;
+            max-width: 600px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        .profile-info p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin: 5px 0;
+        }
+        .profile-info h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .profile-content {
+            width: 55%;
+            text-align: center;
+        }
+        .extra-image {
+            margin: 20px auto;
+            display: block;
+            max-width: 80%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .site-description {
+            margin-top: 20px;
+            text-align: justify;
+        }
+        .edit-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .edit-form {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            display: none;
+            margin-top: 20px;
+            text-align: left;
+            color: white;
+        }
+        footer {
+            text-align: center;
+            padding: 15px 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+    <script>
+        function showEditForm() {
+            document.querySelector('.edit-form').style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('logout') }}">Вийти</a></li>
+            <li><a href="{{ url_for('home') }}">Головна</a></li>
+        </ul>
+    </nav>
+
+    <div class="profile-container">
+        <div class="profile-info">
+            <h2>Інформація про користувача</h2>
+            {% if user['photo'] %}
+                <img src="{{ url_for('static', filename=user['photo']) }}" alt="Фото користувача" width="200">
+            {% else %}
+                <p>Фото не завантажено.</p>
+            {% endif %}
+            <p><strong>Ім'я користувача:</strong> {{ user['username'] }}</p>
+            <p><strong>Роль:</strong> {{ user['role'] }}</p>
+            <p><strong>Номер телефону:</strong> {{ user['phone'] if user['phone'] else 'Не вказано' }}</p>
+            <p><strong>Електронна пошта:</strong> {{ user['email'] if user['email'] else 'Не вказано' }}</p>
+            <p><strong>Адреса:</strong> {{ user['address'] if user['address'] else 'Не вказано' }}</p>
+            <div class="edit-button">
+                <button onclick="showEditForm()">Налаштування профілю</button>
+            </div>
+        </div>
+
+        <div class="profile-content">
+            <img src="{{ url_for('static', filename='uploads/photo_2024-11-09_10-31-25.jpg') }}" alt="Зображення сайту" class="extra-image">
+            <div class="site-description">
+                <p>Цей сайт призначений для надання інформації про наші послуги та можливості. Ви можете переглядати різні розділи сайту, щоб знайти більше цікавої інформації.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="edit-form">
+        <h2>Редагування профілю</h2>
+        <form method="post" enctype="multipart/form-data">
+            <label for="phone">Номер телефону:</label>
+            <input type="text" id="phone" name="phone" value="{{ user['phone'] if user['phone'] else '' }}"><br>
+
+            <label for="email">Електронна пошта:</label>
+            <input type="email" id="email" name="email" value="{{ user['email'] if user['email'] else '' }}"><br>
+
+            <label for="address">Адреса:</label>
+            <input type="text" id="address" name="address" value="{{ user['address'] if user['address'] else '' }}"><br>
+
+            <label for="photo">Оновити фото:</label>
+            <input type="file" id="photo" name="photo"><br><br>
+
+            <button type="submit">Оновити</button>
+        </form>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Курсова. Всі права захищені.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Головна сторінка</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("{{ url_for('static', filename='uploads/e58a6c14-87d5-4235-b807-a52bbae467a6.jpg') }}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        nav ul {
+    display: flex;
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+    justify-content: center;
+    background-color: #222; /* Однорідний фон */
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+nav a:hover {
+    background-color: #444; /* Темніший фон при наведенні */
+}
+
+        header {
+            text-align: center;
+            padding: 40x 0; /* Збільшено відступ зверху і знизу */
+            background-color: rgba(0, 0, 0, 0.8);
+            margin-bottom: 20px; /* Зменшено відступ між заголовком і посиланнями */
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            position: relative;
+            }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            background-color: rgba(0, 0, 0, 0.5); /* Прозорий фон */
+            padding: 20px;
+            border-radius: 15px;
+            margin: auto;
+            max-width: 600px;
+            text-align: center;
+        }
+        .category-buttons a {
+            display: block;
+            padding: 15px 25px;
+            font-size: 20px;
+            background-color: #222;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            margin: 10px 0;
+            text-align: center;
+            transition: transform 0.2s, background-color 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            width: 100%;
+        }
+        .category-buttons a:hover {
+            background-color: #444;
+            transform: scale(1.05);
+        }
+        footer {
+            text-align: center;
+            padding: 15px 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>    
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('login') }}">Увійти</a></li>
+            <li><a href="{{ url_for('register') }}">Реєстрація</a></li>
+            <li><a href="{{ url_for('about') }}">Про нас</a></li>
+            <li><a href="{{ url_for('contact') }}">Контакти</a></li>
+            <li><a href="{{ url_for('news') }}">Новини</a></li>
+            {% if session.get('user') %}
+                <li><a href="{{ url_for('user_dashboard') }}">Кабінет користувача</a></li>
+            {% endif %}
+
+        </ul>
+    </nav>
+
+    <section class="container">
+        <div class="header-text">
+            <h1>Ласкаво просимо на наш сайт!</h1>
+            <p>Оберіть, що ви хочете переглянути.</p>
+        </div>
+        <div class="category-buttons">
+            <a href="{{ url_for('show_cars') }}">Переглянути автомобілі</a>
+            <a href="{{ url_for('show_buses') }}">Переглянути автобуси</a>
+            <a href="{{ url_for('show_trucks') }}">Переглянути вантажівки</a>
+        </div>
+    </section>
+    <footer>
+        <p>&copy; 2024 Курсова. Всі права захищені.</p>
+    </footer>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пошук автобусів за маркою</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='uploads/bus.jpg') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 50px auto;
+            position: relative;
+        }
+        select, input {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+        .autocomplete-suggestions {
+            background-color: white;
+            color: black;
+            border: 1px solid #ccc;
+            max-height: 150px;
+            overflow-y: auto;
+            position: absolute;
+            width: calc(100% - 20px);
+            z-index: 1000;
+        }
+        .autocomplete-suggestion {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .autocomplete-suggestion:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Пошук автобусів за маркою</h1>
+        <input type="text" id="busBrandInput" placeholder="Введіть марку автобуса" oninput="getBusSuggestions()">
+        <div id="autocomplete-brand-container"></div>
+        <select id="busModelSelect" onchange="showBusDetails()">
+            <option value="">Виберіть модель</option>
+        </select>
+    </div>
+    <script>
+        function getBusSuggestions() {
+            let input = document.getElementById('busBrandInput').value;
+            if (input.length >= 2) {
+                fetch(`/get_bus_brands?query=${input}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let container = document.getElementById('autocomplete-brand-container');
+                        container.innerHTML = '';
+                        data.brands.forEach(brand => {
+                            let div = document.createElement('div');
+                            div.textContent = brand;
+                            div.classList.add('autocomplete-suggestion');
+                            div.onclick = () => {
+                                document.getElementById('busBrandInput').value = brand;
+                                container.innerHTML = '';
+                                document.getElementById('busModelSelect').disabled = false; // Активуємо поле для вибору моделі
+                                getModelSuggestions(); // Оновлюємо моделі для обраної марки автоматично
+                            };
+                            container.appendChild(div);
+                        });
+                    });
+            }
+        }
+
+        function getModelSuggestions() {
+            let brand = document.getElementById('busBrandInput').value;
+            if (brand) {
+                fetch(`/get_bus_models?brand=${brand}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let modelSelect = document.getElementById('busModelSelect');
+                        modelSelect.innerHTML = '<option value="">Виберіть модель</option>';
+                        data.models.forEach(model => {
+                            let option = document.createElement('option');
+                            option.value = model;
+                            option.textContent = model;
+                            modelSelect.appendChild(option);
+                        });
+                    });
+            }
+        }
+
+        function showBusDetails() {
+            let model = document.getElementById('busModelSelect').value;
+            if (model) {
+                window.location.href = `/bus_info?model=${model}`;
+            }
+        }
+    </script>
+</body>
+</html>
